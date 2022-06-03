@@ -1,0 +1,52 @@
+/* 博客编辑页的格式 */
+
+.blog-edit-container{
+    width: 1000px;
+    height: calc(100% - 50px);
+    margin:0 auto;
+}
+
+.blog-edit-container .title{
+    width: 100%;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.blog-edit-container .title #title{
+    width: 895px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size:20px;
+    line-height: 40px;
+    padding-left:10px;
+    background-color: rgba(255,255,255,0.8);
+    
+}
+.blog-edit-container .title #submit{
+    width:85px;
+    height: 40px;
+    font-size:15px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    line-height: 40px;
+    color:black;
+    background-color: rgba(255,255,255,0.8);
+    transition: all 0.2s;
+
+}
+.title #submit:active{
+    background-color: rgb(18, 18, 18);
+    color: white;
+}
+#editor{
+    border-radius: 10px;
+    /*能让子元素和父元素全部都透明*/
+    opacity: 80%;
+}

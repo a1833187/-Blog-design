@@ -1,0 +1,20 @@
+/* 博客详情页的格式 */
+.blog-content{
+    /*设置内边距*/
+    padding: 30px;
+}
+
+.blog-content h3{
+    text-align: center;
+    padding: 20px 0px;
+
+}
+.blog-content .date{
+    text-align: center;
+    color:green;
+    padding:10px 0px;
+}
+.blog-content p{
+    text-indent: 2em;
+    padding: 10px 0px;
+}

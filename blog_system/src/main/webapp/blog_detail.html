@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/blog_edit.css  ">
+    <link rel="stylesheet" href="css/common.css">
+
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css">
+    <script src="js/jQuery.min.js"></script>
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="editor.md/editormd.js"></script>
+    <title>博客详情页</title>
+</head>
+<body>
+     <!--导航栏-->
+     <div class="nav">
+        <img src="image/log.png">
+        <span>我的博客系统</span>
+        <div class="spacer"></div>
+        <a href="blog_list.html">主页 </a>
+        <a href="blog_edit.html">写博客 </a>
+        <a href="logout">注销 </a>
+    </div>
+    <div class="container">
+        <div class="left">
+            <div class="card">
+                <img src="image/pig.png">
+                <h3></h3>
+                <a href="https://github.com/a1833187">GitHub地址</a>
+                <div class="counter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="counter">
+                    <span>3</span>
+                    <span>2</span>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="blog-content">
+                <h3></h3>
+                <div class="date">
+                    
+                </div>
+                <div id="content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function getBlogDetail(){
+            $.ajax({
+                type:'get',
+                //location.search 能够拿到?blogId=1这样的数据
+                url:'blog' + location.search,
+                success: function(body){
+
+                    let h3 = document.querySelector('.blog-content>h3');
+                    h3.innerHTML = body.title;
+
+                    let dateDiv = document.querySelector('.date');
+                    dateDiv.innerHTML = body.postTime;
+
+                    // let contentDiv = document.createElement('#content');
+                    // contentDiv.innerHTML = body.content;
+                    
+                    
+                    //用editor.md 对正文进行渲染
+                    //content 对应的css标签必须是id
+                    editormd.markdownToHTML('content',{
+                        markdown:body.content
+                    });
+
+                }
+            });
+        }
+        getBlogDetail();
+
+        function getAuthorInfo(user){
+            $.ajax({
+                type:'get',
+                url:'authorInfo' + location.search,
+                success:function(body){
+                    if(body.username){
+                        updateUserName(body.username);
+                        if(body.username == user.username){
+                            let navDiv = document.querySelector('.nav');
+                            let a = document.createElement('a');
+                            a.innerHTML = "删除";
+                            a.href = "blogDelete" + location.search;
+                            navDiv.appendChild(a);
+                        }
+                    }else{
+                        console.log("获取作者信息失败:" + body.reason);
+                    }
+                }
+            })
+        }
+        
+        
+    </script>
+     <script>
+        function getUserInfo(pageName){
+            $.ajax({
+                type:"get",
+                url:"login",
+                success: function(body){
+                    if(body.userId && body.userId > 0){
+                        console.log("用户" + body.username + "登陆成功");
+                       
+                        getAuthorInfo(body);
+                    }else{
+                        //前端跳转的函数
+                        alert("当前处于未登录状态,请先登录!")
+                        location.assign("blog_login.html");
+                    }
+                },
+                error: function(){
+                    alert("当前处于未登录状态,请先登录!")
+                        location.assign("blog_login.html");
+                }
+            });
+        }
+
+         getUserInfo("blog_detail.html");
+
+
+         function updateUserName(username){
+            let h3 = document.querySelector('.card h3');
+            h3.innerHTML = username;
+        }
+     </script>
+</body>
+</html>
